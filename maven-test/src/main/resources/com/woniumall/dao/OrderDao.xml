@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.woniumall.dao.OrderDao">
+
+    <insert id="insert" useGeneratedKeys="true" keyProperty="id">
+        insert into mall_order
+        (no, userid, ordertime, paytype, paytime, receivetime,
+         accept, telephone, address, totalmoney, status)
+        values (#{no},#{userid},#{orderTime},#{payType},#{payTime},#{receiveTime},
+                #{accept},#{telephone},#{address},#{totalMoney},#{status});
+    </insert>
+
+
+    <resultMap id="orderMap" type="Order">
+        <id column="moid" property="id"/>
+        <result column="no" property="no"/>
+        <result column="ordertime" property="orderTime"/>
+        <result column="accept" property="accept" />
+        <result column="address" property="address" />
+        <association property="user" javaType="com.woniumall.entity.User">
+            <result column="account" property="account" />
+        </association>
+        <collection property="orderItemList" ofType="OrderItem">
+            <id column="id" property="id"/>
+            <result column="num" property="num"/>
+            <result column="price" property="price"/>
+            <association property="goods" javaType="Goods">
+                <result column="name" property="name"/>
+                <result column="img" property="img" />
+            </association>
+        </collection>
+    </resultMap>
+
+    <select id="getById" resultMap="orderMap">
+        select mo.id moid,ordertime,accept,address,
+               moi.num,moi.price,mg.name,mg.img,ms.account
+        from mall_order mo,mall_order_item moi, mall_goods mg, mall_user ms
+        where mo.id = moi.orderid and moi.goodsid = mg.id and mo.userid=ms.id
+        and mo.id=#{id};
+    </select>
+
+
+
+    <resultMap id="OrderUserMap" type="Order">
+        <id column="moid" property="id" />
+        <result column="no" property="no" />
+        <result column="ordertime" property="orderTime" />
+        <result column="paytime" property="payTime" />
+        <result column="accept" property="accept" />
+        <result column="telephone" property="telephone" />
+        <result column="mostatus" property="status" />
+        <association property="user"
+                     select="com.woniumall.dao.UserDao.getByOrderIdToUserStepTwo"
+                     column="userid">
+            <id column="uid" property="id" />
+            <result column="account" property="account" />
+            <result column="regtime" property="regTime" />
+            <result column="score" property="score" />
+            <result column="password" property="password" />
+            <result column="avatar" property="avatar" />
+            <result column="email" property="email" />
+            <result column="money" property="money" />
+            <result column="userstatus" property="status" />
+        </association>
+    </resultMap>
+    <select id="getByOrderIdToUserStepOne" resultMap="OrderUserMap">
+        select mo.id moid, mo.no, mo.userid, mo.ordertime, mo.paytype, mo.paytime,
+               mo.accept, mo.telephone, mo.address, mo.totalmoney, mo.status mostatus
+        from mall_order mo where mo.userid=#{id}
+    </select>
+
+
+    <resultMap id="orderStepMap" type="Order">
+        <id column="moid" property="id"/>
+        <result column="no" property="no"/>
+        <result column="ordertime" property="orderTime"/>
+        <result column="accept" property="accept" />
+        <result column="address" property="address" />
+        <association property="user" select="com.woniumall.dao.UserDao.getByIdSteptwo" column="userid">
+            <result column="account" property="account" />
+        </association>
+        <collection property="orderItemList"
+                    select="com.woniumall.dao.OrderItemDao.getByIdStepThree"
+                    column="moid" />
+    </resultMap>
+    <select id="getByIdStepOne" resultMap="orderStepMap">
+        select mo.id moid,ordertime,accept,address,userid from mall_order mo where mo.id=#{id}
+    </select>
+</mapper>

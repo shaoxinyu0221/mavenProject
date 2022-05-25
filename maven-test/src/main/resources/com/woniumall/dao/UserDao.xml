@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.woniumall.dao.UserDao">
+    <insert id="insert">
+        insert into mall_user(account,regtime,score,password,avatar,email,money,status)
+        values (#{account},#{regTime},#{score},#{password},#{avatar},#{email},#{money},#{status})
+    </insert>
+
+    <update id="updateScoreById">
+        update mall_user set score=#{score} where id=#{id}
+    </update>
+
+
+    <select id="queryUserToLogin" resultType="User">
+        select * from mall_user where account=#{account} and password=#{password}
+    </select>
+
+
+    <select id="queryById" resultType="com.woniumall.entity.User">
+        select * from mall_user where id=#{id}
+    </select>
+
+
+    <select id="getByOrderIdToUserStepTwo" resultType="User">
+        select user.id uid, account, regtime, score,
+               password, avatar, email, money, user.status userstatus
+        from mall_user user where id=#{id}
+    </select>
+
+
+    <select id="getByIdSteptwo" resultType="User">
+        select ms.account from mall_user ms where id=#{userId}
+    </select>
+
+
+    <select id="queryUserByAccount" resultType="com.woniumall.entity.User">
+        select * from mall_user where account=#{account}
+    </select>
+
+</mapper>
