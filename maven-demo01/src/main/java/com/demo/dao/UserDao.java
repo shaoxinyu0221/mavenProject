@@ -11,4 +11,6 @@ public interface UserDao {
     Integer updateById(User user);
 
     User queryById(Integer id);
+
+    User queryById2(User user);
 }
