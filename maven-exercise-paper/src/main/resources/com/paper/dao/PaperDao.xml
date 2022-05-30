@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.paper.dao.PaperDao">
+
+    <select id="selectPaperByCondition" resultType="com.paper.entity.Paper">
+        select paper.*,papertype.pername from paper,papertype
+        where paper.typeid=papertype.id
+        <if test="title != null and title != ''" >
+            and title like concat ('%',#{title},'%')
+        </if>
+        <if test="typeId != null and typeId !=''">
+            and typeid = #{typeId}
+        </if>
+    </select>
+
+
+    <update id="updatePaper">
+        update paper set
+        title=#{title},typeid=#{typeId},papersummary=#{paperSummary},paperpath=#{paperPath},
+        creationdate=now(),modifydate=null,status=#{status}
+        where id=#{id}
+    </update>
+
+    <insert id="addPaper">
+        insert into paper values(null,#{title},#{typeId},#{paperSummary},#{paperPath},
+                                 now(),null,'y')
+    </insert>
+
+    <delete id="deletePaper">
+        delete from paper where id=#{id}
+    </delete>
+
+</mapper>

@@ -16,15 +16,14 @@
     <input type="text" name="username" id="username" placeholder="请输入用户名" /><br>
     <input type="password" name="password" id="password" placeholder="请输入密码" /><br>
     <input type="submit" value="登录" />
+    <button name="register" onclick=window.open('http://localhost:80/maven-webapp/register.jsp')>点击注册</button>
     <span style="color:red" id="loginError">
-            <%=request.getAttribute("error")%>
+        ${error}
         </span>
 </form>
+
 <script>
-    var error = document.getElementById("loginError");
-    if (error.innerText == "null") {
-        error.style.display = "none";
-    }
+
     function login(){
         var username = document.getElementById("username").value;
         var password = document.getElementById("password").value;
