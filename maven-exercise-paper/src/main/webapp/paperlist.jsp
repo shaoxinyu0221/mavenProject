@@ -34,9 +34,9 @@
     <div>
         <form action="paper" method="get">
             <input type="hidden" name="opr" value="gotoPaperList">
-            <span>论文标题:</span><input type="text" name="title" placeholder="请输入论文名称" value="${title}"/>
+            <span>论文标题:</span><input type="text" name="title" id="title" placeholder="请输入论文名称" value="${title}"/>
             <span>论文类型:</span>
-            <select name="typeId">
+            <select name="typeId" id="typeId">
                 <option value="">---请选择---</option>
                 <c:forEach var="types" items="${paperTypes}">
                     <option value="${types.id}"
@@ -45,7 +45,7 @@
                 </c:forEach>
             </select>
             <input type="submit" value="查询" />
-            <input type="button" value="清空查询条件" />
+            <input type="button" value="清空查询条件" onclick="clearCondition()"/>
             <button onclick="window.open('paper?opr=paperAdd')">添加</button>
         </form>
     </div>
@@ -75,7 +75,10 @@
     </table>
 
 <script>
-
+    function clearCondition(){
+        document.getElementById("typeId").value=""
+        document.getElementById("title").value=""
+    }
 </script>
 
 </body>
