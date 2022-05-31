@@ -46,7 +46,7 @@
             </select>
             <input type="submit" value="查询" />
             <input type="button" value="清空查询条件" onclick="clearCondition()"/>
-            <button onclick="window.open('paper?opr=paperAdd')">添加</button>
+            <button type="button" onclick="window.open('paper?opr=paperAdd')">添加</button>
         </form>
     </div>
     <table class="paperList" align="center" border="1">
@@ -66,14 +66,17 @@
                 <td>${paper.creationDate}</td>
                 <td>${paper.modifyDate}</td>
                 <td>
-                    <a href="#">修改</a>
+                    <a href="${pageContext.request.contextPath}/paper?opr=paperUpdate&id=${paper.id}">修改</a>
                     &nbsp; | &nbsp;
-                    <a href="#">删除</a>
+                    <a href="${pageContext.request.contextPath}/paper?opr=paperDelete&deleteId=${paper.id}">删除</a>
                 </td>
             </tr>
         </c:forEach>
     </table>
-
+    <p style="color:red" align="center">${success}</p>
+    <p style="color:red" align="center">${modifySuccess}</p>
+    <p style="color:red" align="center">${deleteSuccess}</p>
+    <p style="color:red" align="center">${deleteError}</p>
 <script>
     function clearCondition(){
         document.getElementById("typeId").value=""

@@ -13,6 +13,15 @@
         <if test="typeId != null and typeId !=''">
             and typeid = #{typeId}
         </if>
+        order by paper.id
+    </select>
+
+    <select id="selectPaparTtle" resultType="com.paper.entity.Paper">
+        select * from paper where title = #{title}
+    </select>
+
+    <select id="selectPaperById" resultType="com.paper.entity.Paper">
+        select * from paper where id = #{id}
     </select>
 
 

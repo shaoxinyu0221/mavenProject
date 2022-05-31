@@ -38,22 +38,22 @@
         <p>您现在的位置:论文管理 &nbsp;&nbsp;/&nbsp;&nbsp; <a href="paper?opr=paperAdd">论文添加</a></p>
     </div>
 
-    <form method="post" action="paper?opr=addSuccess">
+    <form method="post" action="paper?opr=addSuccess" enctype="multipart/form-data" onsubmit="return checkForm()">
         <table class="paperAdd" align="center" border="1">
             <tr>
                 <td>论文标题:</td>
-                <td><input type="text" name="title"/></td>
+                <td><input type="text" name="addtitle" id="title"/></td>
             </tr>
             <tr>
                 <td>论文摘要:</td>
-                <td><textarea name="papersummary"></textarea></td>
+                <td><textarea name="addpapersummary" id="summary"></textarea></td>
             </tr>
             <tr>
                 <td>论文类型:</td>
                 <td>
-                    <select name="typeId">
-                        <option>---请选择---</option>
-                        <c:forEach var="types" items="${sessionScope.paperTypes}">
+                    <select name="addtypeId">
+                        <option value="">---请选择---</option>
+                        <c:forEach var="types" items="${paperTypes}">
                             <option value="${types.id}">${types.pername}</option>
                         </c:forEach>
                     </select>
@@ -61,14 +61,22 @@
             </tr>
             <tr>
                 <td>论文:</td>
-                <td><input type="file" name="file"/></td>
+                <td><input type="file" name="addfile" id="file"/></td>
             </tr>
             <tr>
                 <td colspan="2">
                     <input type="submit" value="保存" />
+                    <span style="color:red">${error}</span>
                 </td>
             </tr>
         </table>
     </form>
+
+
+    <script>
+        function checkForm(){
+
+        }
+    </script>
 </body>
 </html>

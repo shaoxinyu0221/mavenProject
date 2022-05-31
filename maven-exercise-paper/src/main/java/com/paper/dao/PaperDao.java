@@ -9,9 +9,14 @@ public interface PaperDao {
 
     List<Paper> selectPaperByCondition(Paper paper);
 
-    void updatePaper(Paper paper);
+    Integer updatePaper(Paper paper);
 
     void addPaper(Paper paer);
 
     void deletePaper(Integer id);
+
+    Paper selectPaparTtle(String title);
+
+    Paper selectPaperById(Integer id);
+
 }
