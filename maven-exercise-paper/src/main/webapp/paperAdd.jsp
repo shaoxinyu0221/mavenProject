@@ -51,7 +51,7 @@
             <tr>
                 <td>论文类型:</td>
                 <td>
-                    <select name="addtypeId">
+                    <select name="addtypeId" id="addtypeId">
                         <option value="">---请选择---</option>
                         <c:forEach var="types" items="${paperTypes}">
                             <option value="${types.id}">${types.pername}</option>
@@ -75,7 +75,20 @@
 
     <script>
         function checkForm(){
-
+            let title = document.getElementById("title").value;
+            let summary = document.getElementById("summary").value;
+            let addtypeId = document.getElementById("addtypeId").value;
+            let file = document.getElementById("file").value;
+            if(title==""||summary==""||addtypeId==""||file==""){
+                alert("不能为空")
+                return false;
+            }
+            let suffix = file.substring(file.lastIndexOf(".")+1);
+            if(suffix!=="doc" && suffix!=="docx"){
+                alert("文件格式不对")
+                return false;
+            }
+            return true;
         }
     </script>
 </body>

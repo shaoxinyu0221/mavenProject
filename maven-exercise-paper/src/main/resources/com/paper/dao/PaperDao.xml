@@ -28,7 +28,7 @@
     <update id="updatePaper">
         update paper set
         title=#{title},typeid=#{typeId},papersummary=#{paperSummary},paperpath=#{paperPath},
-        creationdate=now(),modifydate=null,status=#{status}
+        modifydate=now(),status=#{status}
         where id=#{id}
     </update>
 
