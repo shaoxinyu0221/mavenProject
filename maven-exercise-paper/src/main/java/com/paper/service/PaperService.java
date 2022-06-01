@@ -46,4 +46,11 @@ public class PaperService {
         PaperDao paperDao = MyBatisUtil.getDao(PaperDao.class);
         paperDao.deletePaper(id);
     }
+
+    public void deleteBatch(String ids) {
+        PaperDao paperDao = MyBatisUtil.getDao(PaperDao.class);
+        String[] strings = ids.split(",");
+        paperDao.deleteBatch(strings);
+
+    }
 }

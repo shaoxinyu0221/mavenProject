@@ -47,28 +47,34 @@
             <input type="submit" value="查询" />
             <input type="button" value="清空查询条件" onclick="clearCondition()"/>
             <button type="button" onclick="window.open('paper?opr=paperAdd')">添加</button>
+            <button type="button" onclick="return confirm('是否确认删除'),deleteBatch()">批量删除</button>
         </form>
+
     </div>
     <table class="paperList" align="center" border="1">
         <tr>
             <td>序号</td>
+            <td><input type="checkbox" name="checkAll" id="checkAll" onclick="checkAll()"></td>
             <td>论文标题</td>
             <td>论文类别</td>
             <td>发表时间</td>
             <td>修改时间</td>
+            <td>查看论文</td>
             <td>操作</td>
         </tr>
         <c:forEach var="paper" items="${paperList}" varStatus="vs">
             <tr>
                 <td>${vs.count}</td>
+                <td><input type="checkbox" name="chk" value="${paper.id}" onclick="chkChange(this)"></td>
                 <td>${paper.title}</td>
                 <td>${paper.pername}</td>
                 <td>${paper.creationDate}</td>
                 <td>${paper.modifyDate}</td>
+                <td><a href="${pageContext.request.contextPath}/paper?opr=download&downId=${paper.id}">点击下载</a></td>
                 <td>
                     <a href="${pageContext.request.contextPath}/paper?opr=paperUpdate&id=${paper.id}">修改</a>
                     &nbsp; | &nbsp;
-                    <a href="${pageContext.request.contextPath}/paper?opr=paperDelete&deleteId=${paper.id}">删除</a>
+                    <a href="${pageContext.request.contextPath}/paper?opr=paperDelete&deleteId=${paper.id}" onclick="confirm('是否确认你删除')">删除</a>
                 </td>
             </tr>
         </c:forEach>
@@ -82,6 +88,47 @@
         document.getElementById("typeId").value=""
         document.getElementById("title").value=""
     }
+
+    function deleteBatch(){
+        let chks = document.getElementsByName("chk");
+        let ids = "";
+        for (let chk of chks) {
+            if(chk.checked){
+                ids = ids + chk.value + ",";
+            }
+        }
+        //去掉最后的逗号
+        ids = ids.substring(0,ids.length-1);
+        //把ids传到servlet
+        window.location.href = "${pageContext.request.contextPath}/paper?opr=deleteBatch&ids="+ids;
+    }
+
+    //全选功能
+    function checkAll(){
+        let checkall = document.getElementById("checkAll");
+        let chks = document.getElementsByName("chk");
+        for (let chk of chks){
+            if(checkall.checked){
+                chk.checked = true;
+            }else {
+                chk.checked = false;
+            }
+        }
+    }
+
+    //反选功能
+    function chkChange(){
+        let chks = document.getElementsByName("chk");
+        let checkall = document.getElementById("checkAll");
+        for (let chk of chks){
+            if(chk.checked == false){
+                checkall.checked = false;
+                return;
+            }
+        }
+        checkall.checked = true;
+    }
+
 </script>
 
 </body>

@@ -17,7 +17,7 @@ public class PaperUtil {
     /**
      * 上传文件功能
      */
-    public static void uploadFile(Part partName,String realPath) throws ServletException, IOException {
+    public static String uploadFile(Part partName,String realPath) throws ServletException, IOException {
         //判定路径是否存在,如果不存在,则创建
         File targetDir = new File(realPath);
         if (!targetDir.exists()){
@@ -46,6 +46,6 @@ public class PaperUtil {
         }
         out.close();
         input.close();
-
+        return randName;
     }
 }

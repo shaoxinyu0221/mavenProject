@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.exam.dao.TopicDao">
+
+    <resultMap id="allTopicMap" type="Topic">
+        <id column="topid" property="id"></id>
+        <result column="topname" property="name" />
+        <result column="sid" property="studentId" />
+        <result column="tid" property="teacherId"/>
+        <result column="sname" property="sname"/>
+        <result column="stel" property="stel"/>
+        <result column="tname" property="tname"/>
+    </resultMap>
+
+    <select id="selectAllTopic" resultMap="allTopicMap">
+        select student.id sid,student.name sname,student.telephone stel,topic.name topname,teacher.name tname,
+               topic.id topid,teacher.id tid
+        from topic,student,teacher
+        where student.id=topic.student_id and teacher.id=topic.teacher_id
+    </select>
+
+
+    <insert id="isertTopic">
+        insert into topic(name, student_id, teacher_id) VALUES
+        (#{name},#{studentId},#{teacherId})
+    </insert>
+
+
+    <delete id="deleteByid">
+        delete from topic where id=#{id};
+    </delete>
+</mapper>

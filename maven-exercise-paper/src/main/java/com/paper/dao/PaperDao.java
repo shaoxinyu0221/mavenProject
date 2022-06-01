@@ -19,4 +19,5 @@ public interface PaperDao {
 
     Paper selectPaperById(Integer id);
 
+    void deleteBatch(String[] ids);
 }
