@@ -8,8 +8,6 @@ import com.exam.service.ServiceProxyFactory;
 import com.exam.service.StudentService;
 import com.exam.service.TeacherService;
 import com.exam.service.TopicService;
-import com.exam.util.MyBatisUtil;
-
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;

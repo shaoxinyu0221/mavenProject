@@ -1,5 +1,7 @@
 package com.paper.service;
 
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import com.paper.dao.PaperDao;
 import com.paper.entity.Paper;
 import com.paper.exception.MyException;
@@ -52,5 +54,18 @@ public class PaperService {
         String[] strings = ids.split(",");
         paperDao.deleteBatch(strings);
 
+    }
+
+    public PageInfo<Paper> getPaperInfo(Paper paper,Integer pageNum,Integer pageSize) {
+        //1.开启分页,提供想要展示的页码和想要展示的条数,只有紧跟着这条的才会启用拦截器
+        PageHelper.startPage(pageNum,pageSize);
+        //2.进行查询
+        PaperDao paperDao = MyBatisUtil.getDao(PaperDao.class);
+        List<Paper> paperList = paperDao.selectPaperByCondition(paper);
+        //3.进行封装,将list封装进pageInfo中,必须用构造器
+        //新建pageInfo对象,必须用构造器,不能用set方法
+        PageInfo<Paper> pageInfo = new PageInfo<>(paperList);
+
+        return pageInfo;
     }
 }

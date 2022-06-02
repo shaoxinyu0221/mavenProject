@@ -1,5 +1,6 @@
 package com.paper.servlet;
 
+import com.github.pagehelper.PageInfo;
 import com.paper.entity.Paper;
 import com.paper.entity.PaperType;
 import com.paper.exception.MyException;
@@ -58,6 +59,8 @@ public class PaperServlet extends HttpServlet {
 
     }
 
+
+    /**批量删除*/
     private void deleteBatch(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException{
         String ids = request.getParameter("ids");
         try {
@@ -188,13 +191,26 @@ public class PaperServlet extends HttpServlet {
         Paper paper = new Paper();
         paper.setTitle(title);
         paper.setTypeId(typeId);
-
+        //设置pageNum的默认值
+        Integer pageNum = 1;
+        String pNum = request.getParameter("pNum");
+        if(!"".equals(pNum) && pNum!=null){
+            pageNum = Integer.parseInt(pNum);
+        }
+        Integer pageSize = 5;
+        String size = request.getParameter("size");
+        if(!"".equals(size) && size!=null){
+            pageSize = Integer.parseInt(size);
+        }
+        request.setAttribute("pageSize",pageSize);
         //
-        List<Paper> paperList = proxy.queryPaperList(paper);
+        //分页查询语句
+        PageInfo<Paper> paperInfo = proxy.getPaperInfo(paper,pageNum,pageSize);
+
         List<PaperType> paperTypes = typeProxy.queryPaperType();
 
 
-        request.getSession().setAttribute("paperList",paperList);
+        request.setAttribute("paperInfo",paperInfo);
         request.getSession().setAttribute("paperTypes",paperTypes);
         //查询条件回填
         request.setAttribute("title",title);

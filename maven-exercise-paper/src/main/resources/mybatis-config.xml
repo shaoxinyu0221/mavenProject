@@ -37,6 +37,12 @@
         <package name="com.paper.entity"/>
     </typeAliases>
 
+    <!--配置分页插件-->
+    <plugins>
+        <plugin interceptor="com.github.pagehelper.PageInterceptor"></plugin>
+    </plugins>
+    
+    
     <environments default="development">
 
         <environment id="development">

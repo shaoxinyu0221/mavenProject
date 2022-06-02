@@ -3,6 +3,9 @@
 <html>
 <head>
     <title>论文列表</title>
+    <link rel="stylesheet" href="css/bootstrap.css">
+    <script src="js/jquery-3.4.1.min.js"></script>
+    <script src="js/bootstrap.js"></script>
     <style>
         * {
             margin: 0;
@@ -62,10 +65,10 @@
             <td>查看论文</td>
             <td>操作</td>
         </tr>
-        <c:forEach var="paper" items="${paperList}" varStatus="vs">
+        <c:forEach var="paper" items="${requestScope.paperInfo.list}" varStatus="vs">
             <tr>
-                <td>${vs.count}</td>
-                <td><input type="checkbox" name="chk" value="${paper.id}" onclick="chkChange(this)"></td>
+                <td>${vs.count+paperInfo.startRow-1}</td>
+                <td><input type="checkbox" name="chk" value="${paper.id}" onclick="chkChange()"></td>
                 <td>${paper.title}</td>
                 <td>${paper.pername}</td>
                 <td>${paper.creationDate}</td>
@@ -83,7 +86,58 @@
     <p style="color:red" align="center">${modifySuccess}</p>
     <p style="color:red" align="center">${deleteSuccess}</p>
     <p style="color:red" align="center">${deleteError}</p>
+
+    <!--分页组件-->
+    <div style="margin:0px;text-align:center;margin-top:0px;">
+        <ul class="pagination">
+            <c:if test="${requestScope.paperInfo.pageNum eq 1}">
+                <li><a  title="首页">&laquo;</a></li>
+                <li><a  title="上一页">&lsaquo;</a></li>
+            </c:if>
+            <c:if test="${requestScope.paperInfo.pageNum ne 1}">
+                <li><a onclick="changePage(1)" title="首页">&laquo;</a></li>
+                <li><a href="javascript:changePage(${requestScope.paperInfo.prePage})" title="上一页">&lsaquo;</a></li>
+            </c:if>
+
+            <c:forEach var="pageNum" items="${requestScope.paperInfo.navigatepageNums}">
+                <li class="<c:if test="${pageNum eq requestScope.paperInfo.pageNum}">active</c:if>">
+                    <a href="javascript:changePage(${pageNum})">${pageNum}</a>
+                </li>
+            </c:forEach>
+
+            <c:if test="${requestScope.paperInfo.pageNum eq requestScope.paperInfo.pages}">
+                <li><a  title="下一页">&rsaquo;</a></li>
+                <li><a  title="末页">&raquo;</a></li>
+            </c:if>
+            <c:if test="${requestScope.paperInfo.pageNum ne requestScope.paperInfo.pages}">
+            <li><a href="javaScript:changePage(${requestScope.paperInfo.nextPage})" title="下一页">&rsaquo;</a></li>
+            <li><a href="javaScript:changePage(${requestScope.paperInfo.pages})" title="末页">&raquo;</a></li>
+            </c:if>
+
+            <li>
+                &nbsp;&nbsp;总记录 ${requestScope.paperInfo.total} 条
+                &nbsp;&nbsp;总页数 ${requestScope.paperInfo.pages} 页
+                &nbsp;&nbsp;转到
+                <input type="text" style="width:30px;text-align: center;" class="input" value="1" id="changeNum"/> 页
+                <select name="size" id="size">
+                    <option value="5">每页展示5条数据</option>
+                    <option value="10">每页展示10条数据</option>
+                    <option value="15">每页展示15条数据</option>
+                    <option value="20">每页展示20条数据</option>
+                </select>
+                <button type="button" class="btn btn-primary active" onclick="changeNum()">确定</button>
+            </li>
+        </ul>
+    </div>
+
+
 <script>
+
+    function changePage(pageNums){
+        window.location.href = "${pageContext.request.contextPath}/paper?opr=gotoPaperList&pNum="+pageNums;
+    }
+
+
     function clearCondition(){
         document.getElementById("typeId").value=""
         document.getElementById("title").value=""
@@ -129,6 +183,17 @@
         checkall.checked = true;
     }
 
+
+    function changeNum(){
+        let num = document.getElementById("changeNum").value;
+        let size = document.getElementById("size").value;
+        let title = document.getElementById("title").value;
+        if (isNaN(num) || num>${requestScope.paperInfo.pages}){
+            alert("请输入正确的数字")
+            return;
+        }
+        window.location.href="${pageContext.request.contextPath}/paper?opr=gotoPaperList&pNum="+num+"&size="+size+"&title="+title+"&typeId="+${typeId};
+    }
 </script>
 
 </body>
