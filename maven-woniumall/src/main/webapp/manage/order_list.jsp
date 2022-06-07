@@ -95,6 +95,9 @@ table {
 							</td>
 							<td>
 								<a href="manage/order?opr=gotoOrderList&orderId=${order.id}"><span class="glyphicon glyphicon-pencil"></span>查看</a>&nbsp;&nbsp;&nbsp;
+								<a href="manage/order?opr=changeStatus&orderId=${order.id}">
+									<c:if test="${order.status eq '1'}"><span class="glyphicon glyphicon-pencil">发货</span></c:if>
+								</a>
 							</td>
 						</tr>
 					</c:forEach>

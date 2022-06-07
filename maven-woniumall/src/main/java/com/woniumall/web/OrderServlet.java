@@ -28,8 +28,19 @@ public class OrderServlet extends HttpServlet {
         String opr = request.getParameter("opr");
         if ("gotoOrderList".equals(opr)){
             gotoOrderList(request,response);
+        }else if ("changeStatus".equals(opr)){
+            changeStatus(request,response);
         }
     }
+
+    /**发货*/
+    private void changeStatus(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException{
+        Integer orderId = Integer.parseInt(request.getParameter("orderId"));
+        orderService.updateOrderStatus(orderId,"2");
+        request.setAttribute("success","已发货");
+        gotoOrderList(request,response);
+    }
+
 
     /**查询订单列表,并前往页面*/
     private void gotoOrderList(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException{

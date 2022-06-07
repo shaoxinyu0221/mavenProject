@@ -12,6 +12,10 @@
                 #{accept},#{telephone},#{address},#{totalMoney},#{status});
     </insert>
 
+    <update id="updateById">
+        update mall_order set status=#{status} where id=#{orderId}
+    </update>
+
 
     <resultMap id="orderMap" type="Order">
         <id column="moid" property="id"/>

@@ -74,4 +74,9 @@ public class OrderService {
         List<Order> orderList = orderDao.selectOrderByCondition(status,account);
         return new PageInfo<Order>(orderList);
     }
+
+    public void updateOrderStatus(Integer orderId, String status) {
+        OrderDao orderDao = MyBatisUtil.getDao(OrderDao.class);
+        orderDao.updateById(orderId,status);
+    }
 }

@@ -17,4 +17,6 @@ public interface OrderDao {
     Order getByIdStepOne(Integer id);
 
     List<Order> selectOrderByCondition(@Param("status") String status, @Param("account") String account);
+
+    void updateById(@Param("orderId") Integer orderId, @Param("status") String status);
 }
