@@ -12,6 +12,10 @@
         update mall_user set score=#{score} where id=#{id}
     </update>
 
+    <update id="updateStatusById">
+        update mall_user set status=#{status} where id=#{userId}
+    </update>
+
 
     <select id="queryUserToLogin" resultType="User">
         select * from mall_user where account=#{account} and password=#{password}
@@ -35,6 +39,21 @@
     </select>
 
 
+    <select id="queryUserByAccount" resultType="com.woniumall.entity.User">
+        select * from mall_user where account=#{account}
+    </select>
 
+    <select id="queryUserByCondition" resultType="com.woniumall.entity.User">
+        select * from mall_user
+        <where>
+            <if test="account != null and account !=''">
+                and account like concat("%",#{account},"%")
+            </if>
+
+            <if test="status != null and status !=''">
+                and status = #{status}
+            </if>
+        </where>
+    </select>
 
 </mapper>

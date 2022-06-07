@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.woniumall.dao.GoodsDao">
+    <sql id="GoodsColumns">
+        g.id as goodsid,g.name as goodsname,no,categoryid,stock,author,publisher,publishtime,
+        marketprice,saleprice,isnew,ishot,img,description,uptime,
+        downtime,salenum,remarknum,remarkscore,g.status as goodstatus
+    </sql>
+
+    <insert id="add">
+        insert into mall_goods(name,no,categoryid,stock,author,publisher,publishtime,
+                               marketprice,saleprice,isnew,ishot,img,description,uptime,
+                               downtime,salenum,remarknum,remarkscore,status)
+        values (#{name},#{no},#{categoryId},#{stock},#{author},#{publisher},#{publishTime}
+               ,#{marketPrice},#{salePrice},#{isNew},#{isHot},#{img}
+               ,#{description},#{upTime},null,null,null,null,#{status});
+    </insert>
+
+    <update id="update">
+        update mall_goods set name=#{name},no=#{no},categoryid=#{categoryId},stock=#{stock},author=#{author},publisher=#{publisher},
+                              publishtime=#{publishTime},marketprice=#{marketPrice},saleprice=#{salePrice},isnew=#{isNew},
+                              ishot=#{isHot},img=#{img},description=#{description},uptime=#{upTime},downtime=#{downTime},
+                              salenum=#{saleNum},remarknum=#{remarkNum},remarkscore=#{remarkScore},status=#{status}
+        where id=#{id}
+    </update>
+
+    <update id="updateStockByid">
+        update mall_goods set stock=#{stock} where id=#{id}
+    </update>
+
+    <update id="updateStatusById">
+        update mall_goods set status=#{status} where id=#{goodId}
+    </update>
+
+    <select id="queryById" resultType="Goods">
+        select * from mall_goods where id=#{id}
+    </select>
+
+<!--    <resultMap id="GoodsMap" type="goods">-->
+<!--        <id column="goodsid" property="id"></id>-->
+<!--        <result column="goodsname" property="name" />-->
+<!--        <result column="no" property="no" />-->
+<!--        <result column="cotegoryid" property="categoryId"/>-->
+<!--        <result column="stock" property="stock"/>-->
+<!--        <result column="author" property="author"/>-->
+<!--        <result column="publisher" property="publisher"/>-->
+<!--        <result column="publishtime" property="publishTime"/>-->
+<!--        <result column="marketprice" property="marketPrice"/>-->
+<!--        <result column="saleprice" property="salePrice"/>-->
+<!--        <result column="isnew" property="isNew"/>-->
+<!--        <result column="ishot" property="isHot"/>-->
+<!--        <result column="description" property="description"/>-->
+<!--        <result column="uptime" property="upTime"/>-->
+<!--        <result column="downtime" property="downTime"/>-->
+<!--        <result column="salenum" property="saleNum"/>-->
+<!--        <result column="remarknum" property="remarkNum"/>-->
+<!--        <result column="remarkscore" property="remarkScore"/>-->
+<!--        <result column="goodstatus" property="status"/>-->
+<!--        <association property="category" javaType="Category">-->
+<!--            <id column="id" property="id"></id>-->
+<!--            <result column="name" property="name"/>-->
+<!--            <result column="status" property="status"></result>-->
+<!--        </association>-->
+<!--    </resultMap>-->
+
+    <!--resultMap 的简化写法-->
+    <resultMap id="GoodsMap" type="goods">
+        <!--直接写category中重复的,其他会自动匹配-->
+        <id column="id" property="id"></id>
+        <result column="name" property="name"/>
+        <result column="status" property="status"></result>
+    </resultMap>
+
+
+    <select id="queryAll" resultType="Goods">
+        select g.*, c.name as categoryName
+        from mall_goods as g,mall_category as c where g.categoryid=c.id
+    </select>
+
+
+
+    <select id="getByIdStepFour" resultType="com.woniumall.entity.Goods">
+        select mg.name,mg.img from mall_goods mg where id=#{goodsId}
+    </select>
+
+
+    <select id="queryGoodsByCategoryId" resultType="com.woniumall.entity.Goods">
+        select * from mall_goods where categoryid = #{categoryId}
+    </select>
+    
+    <select id="queryGoodsByCondition" resultType="com.woniumall.entity.Goods">
+        select g.*, c.name as categoryName
+        from mall_goods as g,mall_category as c where g.categoryid=c.id
+        <if test="name != null and name !=''">
+            and g.name like concat("%",#{name},"%")
+        </if>
+        <if test="categoryId != null and categoryId !=''">
+            and g.categoryid = #{categoryId}
+        </if>
+    </select>
+
+    <!--    <select id="queryAll" resultMap="GoodsMap">-->
+<!--        select <include refid="GoodsColumns" />, c.*-->
+<!--        from mall_goods as g,mall_category as c where g.categoryid=c.id-->
+<!--    </select>-->
+
+
+</mapper>

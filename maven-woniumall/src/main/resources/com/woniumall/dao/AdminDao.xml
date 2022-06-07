@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.woniumall.dao.AdminDao">
+
+
+    <select id="queryAdminToLogin" resultType="com.woniumall.entity.Admin">
+        select * from mall_admin where account=#{account} and password=#{password}
+    </select>
+</mapper>

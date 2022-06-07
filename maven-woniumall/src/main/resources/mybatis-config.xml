@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE configuration
+        PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-config.dtd">
+<configuration>
+
+    
+    <properties resource="db.properties" />
+    
+    <settings>
+            <!--开启二级缓存第一步-->
+        <setting name="cacheEnabled" value="true"/>
+        
+<!--        &lt;!&ndash;mybatis输出简单日志&ndash;&gt;-->
+<!--        <setting name="logImpl" value="STDOUT_LOGGING"/>-->
+
+        <!--开启延迟加载-->
+        <setting name="lazyLoadingEnabled" value="true" />
+        <!--控制具有懒加载特性的对象的属性的加载情况 :
+            true表示如果对具有懒加载特性的对象的任意调用会导致这个对象的完整加载，
+            false表示每种属性按照需要加载
+         -->
+        <setting name="aggressiveLazyLoading" value="false"/>
+
+<!--    lazyLoadTriggerMethods参数来指定需要加载延迟对象的方法调用-->
+<!--    默认是equals、clone、hashCode和toString，
+        也就是说我们在调用代理对象的这些方法之前就会把延迟加载对象从数据库加载出来-->
+        <setting name="lazyLoadTriggerMethods" value="" />
+</settings>
+
+
+<!--在核心配置文件中给resultType parameterType取别名
+   代替原来的全类名
+-->
+    <typeAliases>
+        <!--为该包下的所有类取别名,别名默认为类名-->
+        <package name="com.woniumall.entity"/>
+    </typeAliases>
+
+    <!--配置分页插件-->
+    <plugins>
+        <plugin interceptor="com.github.pagehelper.PageInterceptor"></plugin>
+    </plugins>
+
+    <environments default="development">
+
+        <environment id="development">
+            <transactionManager type="JDBC"/>
+            <dataSource type="POOLED">
+                <property name="driver" value="${driver}"/>
+                <property name="url" value="${url}"/>
+                <property name="username" value="${username}"/>
+                <property name="password" value="${password}"/>
+            </dataSource>
+        </environment>
+    </environments>
+    <mappers>
+        <!--<mapper resource="com/woniumall/dao/CategoryDao.xml"/>-->
+        <!--直接读取该包下的所有接口文件,xml文件的路径名和文件名必须与dao文件的路径名和接口名完全相同-->
+        <package name="com.woniumall.dao"/>
+    </mappers>
+</configuration>
