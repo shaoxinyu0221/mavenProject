@@ -61,7 +61,7 @@ public class OrderServlet extends HttpServlet {
         }
 
         //查询
-        PageInfo<Order> orderInfo = orderService.getOrderList(order,pageNumDefault,pageSizeDefault);
+        PageInfo<Order> orderInfo = orderService.getOrderList(orderStatus,pageNumDefault,pageSizeDefault,userAccount);
         request.setAttribute("orderInfo",orderInfo);
         //页面跳转
         request.getRequestDispatcher("/manage/order_list.jsp").forward(request,response);

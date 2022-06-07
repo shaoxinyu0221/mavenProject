@@ -9,6 +9,7 @@ import com.woniumall.dao.UserDao;
 import com.woniumall.entity.Goods;
 import com.woniumall.entity.Order;
 import com.woniumall.entity.OrderItem;
+import com.woniumall.entity.User;
 import com.woniumall.util.MallUtil;
 import com.woniumall.util.MyBatisUtil;
 import org.apache.ibatis.session.SqlSession;
@@ -67,10 +68,10 @@ public class OrderService {
 
     }
 
-    public PageInfo<Order> getOrderList(Order order, Integer pageNumDefault, Integer pageSizeDefault) {
+    public PageInfo<Order> getOrderList(String status, Integer pageNumDefault, Integer pageSizeDefault, String account) {
         PageHelper.startPage(pageNumDefault,pageSizeDefault);
         OrderDao orderDao = MyBatisUtil.getDao(OrderDao.class);
-        List<Order> orderList = orderDao.selectOrderByCondition(order);
+        List<Order> orderList = orderDao.selectOrderByCondition(status,account);
         return new PageInfo<Order>(orderList);
     }
 }

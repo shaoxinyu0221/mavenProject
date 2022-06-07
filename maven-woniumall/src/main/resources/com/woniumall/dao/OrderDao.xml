@@ -111,10 +111,10 @@
         from mall_order mo,mall_user mu
         where mo.userid=mu.id
         <if test="account != null and account !=''">
-            and account like concat("%",#{order.user.account},"%")
+            and account like concat("%",#{account},"%")
         </if>
         <if test="status != null and status !=''">
-            and mo.status = #{order.status}
+            and mo.status = #{status}
         </if>
     </select>
 </mapper>
