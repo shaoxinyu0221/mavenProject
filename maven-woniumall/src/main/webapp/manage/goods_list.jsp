@@ -49,6 +49,7 @@ table {
 						</select>
 						<input type="hidden" name="opr" value="queryGoodsList">
 						<button id="btnQuery" class="btn btn-primary">查询</button>
+						<button type="button" class="btn btn-primary" id="deleteBatch">批量下架</button>
 					</div>
 				</form>
 			</div>
@@ -79,7 +80,7 @@ table {
 					<c:forEach var="goods" items="${goodsInfo.list}" varStatus="vs">
 						<tr class="text-center">
 							<td>${vs.count + requestScope.goodsInfo.startRow-1}</td>
-							<td><input type="checkbox" name="chk" id="chk" onclick="selectChk()"/></td>
+							<td><input type="checkbox" name="chk" id="chk" onclick="selectChk()" value="${goods.id}"/></td>
 							<td>${goods.name}</td>
 							<td>${goods.categoryName}</td>
 							<td><img src="${goods.img}"/></td>
@@ -150,6 +151,21 @@ table {
 		
 	</div>
 	<script>
+
+		document.getElementById("deleteBatch").addEventListener("click",function(){
+			let chks = document.getElementsByName("chk");
+			let ids = "";
+			for(let i=0;i<chks.length;i++){
+				if(chks[i].checked){
+					ids += chks[i].value + ",";
+				}
+			}
+			//去掉最后的一个逗号
+			ids = ids.substring(0,ids.length-1);
+			//将数据传到后台
+			window.location.href = "manage/goods?opr=deleteBatch&ids="+ids;
+		})
+
 		if ("${success}" != ""){
 			layer.alert("${success}");
 		}

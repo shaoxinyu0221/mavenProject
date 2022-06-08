@@ -36,7 +36,8 @@
         axios.get("code?superior="+code).then(function(result){
             let citys = result.data;
             let options = document.getElementById("city").options;
-            document.getElementById("city").length = 1;
+            document.getElementById("city").length = 0;
+            document.getElementById("area").length = 0;
             for (let city of citys) {
                 options.add(new Option(city.content,city.code));
             }
@@ -50,7 +51,7 @@
         axios.get("code?superior="+code).then(function(result){
             let areas = result.data;
             let options = document.getElementById("area").options;
-            document.getElementById("area").length = 1;
+            document.getElementById("area").length = 0;
             for (let area of areas) {
                 options.add(new Option(area.content,area.code));
             }

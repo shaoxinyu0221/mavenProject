@@ -1,7 +1,10 @@
-package com.woniumall.web;
+package com.woniumall.web.manamge;
 
+import com.alibaba.fastjson.JSON;
 import com.github.pagehelper.PageInfo;
+import com.woniumall.dao.OrderItemDao;
 import com.woniumall.entity.Order;
+import com.woniumall.entity.OrderItem;
 import com.woniumall.entity.User;
 import com.woniumall.service.OrderService;
 import com.woniumall.service.ServiceProxyFactory;
@@ -12,6 +15,8 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.io.PrintWriter;
+import java.util.List;
 
 @WebServlet("/manage/order")
 public class OrderServlet extends HttpServlet {
@@ -30,7 +35,28 @@ public class OrderServlet extends HttpServlet {
             gotoOrderList(request,response);
         }else if ("changeStatus".equals(opr)){
             changeStatus(request,response);
+        }else if ("gotoOrderItem".equals(opr)){
+            gotoOrderItem(request,response);
         }
+    }
+
+    /**查看订单详情页*/
+    private void gotoOrderItem(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException{
+        Integer orderId = Integer.parseInt(request.getParameter("orderId"));
+        System.out.println("orderId:"+orderId);
+        //通过订单id查询order_item表单,四表关联查询
+        List<OrderItem> orderItemList = orderService.getOrderItemList(orderId);
+        System.out.println("方法调用了么");
+        //将拿到的数据,写成JSON格式字符串
+        String formatJson = JSON.toJSONStringWithDateFormat(orderItemList, "yyyy-MM-dd HH:mm:ss");
+        System.out.println(formatJson);
+
+        response.setContentType("text/html;charset=utf-8");
+        PrintWriter out = response.getWriter();
+        out.println(formatJson);
+        out.flush();
+        out.close();
+
     }
 
     /**发货*/

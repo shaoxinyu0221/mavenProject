@@ -52,6 +52,13 @@ public class CategoryService {
     }
 
 
+    public List<Category> getCategoryListForNav() {
+        CategoryDao categoryDao = MyBatisUtil.getDao(CategoryDao.class);
+        return categoryDao.queryCategoryListForNav();
+    }
 
-
+    public List<Category> getCategoryListForAll() {
+        CategoryDao categoryDao = MyBatisUtil.getDao(CategoryDao.class);
+        return categoryDao.queryCategoryListForAll();
+    }
 }

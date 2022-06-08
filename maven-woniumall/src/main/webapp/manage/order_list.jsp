@@ -11,6 +11,7 @@
 	<script type="text/javascript" src="js/jquery-3.5.1.js"></script>
 	<script type="text/javascript" src="js/bootstrap.js"></script>
 	<script src="js/layer/layer.js"></script>
+    <script src="js/axios.min.js"></script>
 <style type="text/css">
 .table tbody tr td {
 	vertical-align: middle;
@@ -94,7 +95,7 @@ table {
 								<c:if test="${order.status eq '4'}">已完成</c:if>
 							</td>
 							<td>
-								<a href="manage/order?opr=gotoOrderList&orderId=${order.id}"><span class="glyphicon glyphicon-pencil"></span>查看</a>&nbsp;&nbsp;&nbsp;
+								<a href="javaScript:viewOrder(${order.id})" id="viewOrderItem"><span class="glyphicon glyphicon-pencil"></span>查看</a>&nbsp;&nbsp;&nbsp;
 								<a href="manage/order?opr=changeStatus&orderId=${order.id}">
 									<c:if test="${order.status eq '1'}"><span class="glyphicon glyphicon-pencil">发货</span></c:if>
 								</a>
@@ -155,7 +156,68 @@ table {
 		</div>
 		
 	</div>
+	<div>
+		<table class="table table-bordered">
+			<caption>订单详情</caption>
+			<thead>
+			<tr>
+				<th>序号</th>
+				<th>商品名称</th>
+				<th>商品图片</th>
+				<th>数量</th>
+				<th>价格</th>
+				<th>小计</th>
+			</tr>
+			</thead>
+			<tbody id="tbody">
+
+			</tbody>
+		</table>
+	</div>
+
+
 	<script>
+		function viewOrder(orderId){
+			axios.get('manage/order?opr=gotoOrderItem&orderId='+orderId).then(function(result){
+				let data = result.data;
+				let tbody = document.getElementById('tbody');
+				//清空tbody
+				tbody.innerHTML = '';
+				let i = 1;
+				for (let item of data){
+					//创建tr
+					let tr = document.createElement('tr');
+					//创建td
+					let td1 = document.createElement('td');
+					let td2 = document.createElement('td');
+					let td3 = document.createElement('td');
+					let td4 = document.createElement('td');
+					let td5 = document.createElement('td');
+					let td6 = document.createElement('td');
+					//设置td内容
+					td1.innerText = i;
+					i++;
+					td2.innerText = item.goods.name;
+					td3.innerHTML = '<img src="' + item.goods.img + '"/>';
+					td4.innerText = item.num;
+					td5.innerText = item.price;
+					td6.innerText = item.price * item.num;
+					//添加td到tr
+					tr.appendChild(td1);
+					tr.appendChild(td2);
+					tr.appendChild(td3);
+					tr.appendChild(td4);
+					tr.appendChild(td5);
+					tr.appendChild(td6);
+					//添加tr到tbody
+					tbody.appendChild(tr);
+				}
+			}).catch(function(e){
+				alert("服务器繁忙,查看订单失败")
+			})
+		}
+
+
 		if ("${success}" != ""){
 			layer.alert("${success}");
 		}
@@ -192,7 +254,6 @@ table {
 			}
 			chkAll.checked = true;
 		}
-
 
 	</script>
 </body>

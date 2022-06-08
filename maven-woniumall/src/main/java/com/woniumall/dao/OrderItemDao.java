@@ -12,4 +12,7 @@ public interface OrderItemDao {
     List<OrderItem> getByOrderId(Integer orderId);
 
     List<OrderItem> getByIdStepThree(Integer orderId);
+
+
+    List<OrderItem> selectOrderItemsByOderId(Integer orderId);
 }

@@ -30,5 +30,12 @@
     <select id="queryByName" resultType="com.woniumall.entity.Category">
         select * from mall_category where name = #{name}
     </select>
+    <select id="queryCategoryListForNav" resultType="com.woniumall.entity.Category">
+        select * from mall_category where status = 1 limit 6
+    </select>
+
+    <select id="queryCategoryListForAll" resultType="com.woniumall.entity.Category">
+        select * from mall_category where status = 1
+    </select>
 
 </mapper>

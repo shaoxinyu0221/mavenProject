@@ -23,4 +23,8 @@ public interface CategoryDao {
     List<Category> queryAll();
 
     Category queryByName(String name);
+
+    List<Category> queryCategoryListForNav();
+
+    List<Category> queryCategoryListForAll();
 }

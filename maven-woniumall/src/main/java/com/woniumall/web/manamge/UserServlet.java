@@ -1,4 +1,4 @@
-package com.woniumall.web;
+package com.woniumall.web.manamge;
 
 import com.github.pagehelper.PageInfo;
 import com.woniumall.entity.User;

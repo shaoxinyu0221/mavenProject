@@ -79,4 +79,11 @@ public class OrderService {
         OrderDao orderDao = MyBatisUtil.getDao(OrderDao.class);
         orderDao.updateById(orderId,status);
     }
+
+
+    public List<OrderItem> getOrderItemList(Integer orderId) {
+        OrderItemDao orderItemDao = MyBatisUtil.getDao(OrderItemDao.class);
+        return orderItemDao.selectOrderItemsByOderId(orderId);
+
+    }
 }

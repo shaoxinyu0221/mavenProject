@@ -1,4 +1,4 @@
-package com.woniumall.web;
+package com.woniumall.web.manamge;
 
 import com.woniumall.entity.Category;
 import com.woniumall.entity.User;

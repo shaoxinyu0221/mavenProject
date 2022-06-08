@@ -1,4 +1,4 @@
-package com.woniumall.web;
+package com.woniumall.web.manamge;
 
 import com.github.pagehelper.PageInfo;
 import com.woniumall.entity.Category;
@@ -47,7 +47,12 @@ public class GoodsServlet extends HttpServlet {
             gotoGoodsUpdate(request, response);
         }else if ("updateGoods".equals(opr)){
             updateGoods(request, response);
+        }else if("deleteBatch".equals(opr)){
+            deleteBatch(request, response);
         }
+    }
+
+    private void deleteBatch(HttpServletRequest request, HttpServletResponse response) {
     }
 
     /**修改商品信息*/

@@ -42,4 +42,33 @@
         select moi.num,moi.price,goodsid from mall_order_item moi where orderid=#{orderId}
     </select>
 
+
+    <resultMap id="selectOrderByConditionMap" type="orderItem">
+        <result column="num" property="num"/>
+        <result column="price" property="price"/>
+        <association property="order" javaType="com.woniumall.entity.Order">
+            <result column="ordertime" property="orderTime"/>
+            <result column="accept" property="accept"/>
+            <result column="telephone" property="telephone"/>
+            <result column="address" property="address"/>
+            <result column="totalmoney" property="totalMoney"/>
+            <result column="mos" property="status"/>
+            <association property="user" javaType="com.woniumall.entity.User">
+                <result column="account" property="account"/>
+            </association>
+        </association>
+        <association property="goods" javaType="Goods">
+            <id column="mgid" property="id"/>
+            <result column="name" property="name"/>
+            <result column="img" property="img" />
+        </association>
+    </resultMap>
+    <select id="selectOrderItemsByOderId" resultMap="selectOrderByConditionMap">
+        select mo.no mono,ordertime,account,accept,telephone,address,totalmoney,mo.status mos,
+               name,img,num,price,mg.id mgid
+        from mall_order_item moi,mall_order mo,mall_goods mg,mall_user mu
+        where moi.orderid=mo.id and moi.goodsid=mg.id and mo.userid=mu.id
+        and orderid=#{orderId}
+    </select>
+
 </mapper>

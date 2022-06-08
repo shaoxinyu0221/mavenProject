@@ -99,6 +99,15 @@
         <if test="categoryId != null and categoryId !=''">
             and g.categoryid = #{categoryId}
         </if>
+        <if test="isHot != null and isHot !=''">
+            and g.ishot = #{isHot}
+        </if>
+        <if test="isNew != null and isNew !=''">
+            and g.isnew = #{isNew}
+        </if>
+        <if test="status != null and status !=''">
+            and g.status = #{status}
+        </if>
     </select>
 
     <!--    <select id="queryAll" resultMap="GoodsMap">-->

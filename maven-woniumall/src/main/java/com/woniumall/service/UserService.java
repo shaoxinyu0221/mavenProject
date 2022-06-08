@@ -73,4 +73,10 @@ public class UserService {
         UserDao userDao = MyBatisUtil.getDao(UserDao.class);
         userDao.updateStatusById(status,userId);
     }
+
+    public User accountIsExist(String username) {
+        UserDao userDao = MyBatisUtil.getDao(UserDao.class);
+        User user = userDao.queryUserByAccount(username);
+        return user;
+    }
 }
