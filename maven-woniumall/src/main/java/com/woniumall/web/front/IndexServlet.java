@@ -32,7 +32,53 @@ public class IndexServlet extends HttpServlet {
         String opr = request.getParameter("opr");
         if ("gotoIndex".equals(opr)) {
             gotoIndex(request, response);
+        }else if ("viewGoodsListByCategotry".equals(opr)){
+            viewGoodsListByCategotry(request, response);
+        }else if ("viewGoodsListByGoodsName".equals(opr)){
+            viewGoodsListByGoodsName(request, response);
         }
+    }
+
+    /**通过商品名查询商品*/
+    private void viewGoodsListByGoodsName(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException{
+        String goodsName = request.getParameter("goodsName");
+        //查询12条商品作为最新商品展示
+        Goods goods = new Goods();
+        goods.setName(goodsName);
+        goods.setIsNew("Y");
+        goods.setStatus("1");
+        PageInfo<Goods> goodsInfoIsNew = goodsService.getGoodsInfo(goods, 1, 12);
+        request.setAttribute("goodsInfoIsNew",goodsInfoIsNew);
+        //查询10条商品信息作为热卖商品
+        goods = new Goods();
+        goods.setIsHot("Y");
+        goods.setStatus("1");
+        PageInfo<Goods> goodsInfoIsHot = goodsService.getGoodsInfo(goods, 1, 10);
+        request.setAttribute("goodsInfoIsHot",goodsInfoIsHot);
+
+        //跳转到首页
+        request.getRequestDispatcher("/gotoindex.jsp").forward(request, response);
+    }
+
+    /**根据商品类型展示商品*/
+    private void viewGoodsListByCategotry(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException{
+        Integer categotryId = Integer.parseInt(request.getParameter("categotryId"));
+        //查询12条商品作为最新商品展示
+        Goods goods = new Goods();
+        goods.setCategoryId(categotryId);
+        goods.setIsNew("Y");
+        goods.setStatus("1");
+        PageInfo<Goods> goodsInfoIsNew = goodsService.getGoodsInfo(goods, 1, 12);
+        request.setAttribute("goodsInfoIsNew",goodsInfoIsNew);
+        //查询10条商品信息作为热卖商品
+        goods = new Goods();
+        goods.setIsHot("Y");
+        goods.setStatus("1");
+        PageInfo<Goods> goodsInfoIsHot = goodsService.getGoodsInfo(goods, 1, 10);
+        request.setAttribute("goodsInfoIsHot",goodsInfoIsHot);
+
+        //跳转到首页
+        request.getRequestDispatcher("/gotoindex.jsp").forward(request, response);
     }
 
 

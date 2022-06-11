@@ -49,10 +49,34 @@ public class GoodsServlet extends HttpServlet {
             updateGoods(request, response);
         }else if("deleteBatch".equals(opr)){
             deleteBatch(request, response);
+        }else if ("upGoodsBatch".equals(opr)){
+            upGoodsBatch(request, response);
         }
     }
 
-    private void deleteBatch(HttpServletRequest request, HttpServletResponse response) {
+    /**批量上架商品*/
+    private void upGoodsBatch(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException{
+        //获取要删除的id数组
+        String ids = request.getParameter("ids");
+        String[] splitIds = ids.split(",");
+        //调用service方法,根据商品id,批量修改商品状态
+        goodsService.downGoodsBatch(splitIds,"1");
+        request.setAttribute("success", "批量上架成功");
+        //跳转到商品列表页面
+        queryGoodsList(request, response);
+    }
+
+
+    /**批量下架商品*/
+    private void deleteBatch(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException{
+        //获取要删除的id数组
+        String ids = request.getParameter("ids");
+        String[] splitIds = ids.split(",");
+        //调用service方法,根据商品id,批量修改商品状态
+        goodsService.downGoodsBatch(splitIds,"0");
+        request.setAttribute("success", "批量下架成功");
+        //跳转到商品列表页面
+        queryGoodsList(request, response);
     }
 
     /**修改商品信息*/

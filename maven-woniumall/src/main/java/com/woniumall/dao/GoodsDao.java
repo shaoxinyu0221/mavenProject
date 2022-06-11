@@ -28,4 +28,8 @@ public interface GoodsDao {
     List<Goods> queryGoodsByCondition(Goods goods);
 
     void updateStatusById(@Param("status") String status, @Param("goodId") Integer goodId);
+
+    void changeGoodStatusBatch(@Param("array") String[] splitIds, @Param("status") String status);
+
+    List<Goods> queryByIds(Integer[] goodsIds);
 }

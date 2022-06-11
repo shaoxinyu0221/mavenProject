@@ -1,11 +1,12 @@
 package com.woniumall.util;
 
+import com.alibaba.fastjson.JSON;
+import com.woniumall.entity.ResponseEntity;
+
 import javax.servlet.ServletException;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.Part;
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
+import java.io.*;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.UUID;
@@ -60,5 +61,16 @@ public class MallUtil {
         return randName;
     }
 
+
+    //向客户端发送ajax响应
+    public static<T> void responseAjax(HttpServletResponse response, ResponseEntity<T> responseEntity) throws IOException {
+        //向客户端发送响应
+        response.setContentType("application/json;charset=utf-8");
+        PrintWriter out = response.getWriter();
+        String jsonStr = JSON.toJSONString(responseEntity);
+        out.write(jsonStr);
+        out.flush();
+        out.close();
+    }
 
 }

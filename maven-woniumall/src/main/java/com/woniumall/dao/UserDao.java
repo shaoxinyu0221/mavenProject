@@ -1,5 +1,6 @@
 package com.woniumall.dao;
 
+import com.woniumall.entity.Address;
 import com.woniumall.entity.User;
 import org.apache.ibatis.annotations.Param;
 
@@ -24,4 +25,10 @@ public interface UserDao {
     List<User> queryUserByCondition(User user);
 
     void updateStatusById(@Param("status") String status, @Param("userId") Integer userId);
+
+    List<Address> selectUserAddressList(Integer userCurrentLoginId);
+
+    User selectEmail(String email);
+
+    void updateStatusByEmail(String email);
 }

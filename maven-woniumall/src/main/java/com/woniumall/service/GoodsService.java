@@ -46,4 +46,14 @@ public class GoodsService {
         GoodsDao goodsDao = MyBatisUtil.getDao(GoodsDao.class);
         goodsDao.update(goods);
     }
+
+    public void downGoodsBatch(String[] splitIds, String status) {
+        GoodsDao goodsDao = MyBatisUtil.getDao(GoodsDao.class);
+        goodsDao.changeGoodStatusBatch(splitIds,status);
+    }
+
+    public List<Goods> queryGoodsByIds(Integer[] goodsIds) {
+        GoodsDao goodsDao = MyBatisUtil.getDao(GoodsDao.class);
+        return goodsDao.queryByIds(goodsIds);
+    }
 }

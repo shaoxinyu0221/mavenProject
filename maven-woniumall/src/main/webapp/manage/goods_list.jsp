@@ -50,6 +50,7 @@ table {
 						<input type="hidden" name="opr" value="queryGoodsList">
 						<button id="btnQuery" class="btn btn-primary">查询</button>
 						<button type="button" class="btn btn-primary" id="deleteBatch">批量下架</button>
+						<button type="button" class="btn btn-primary" id="upGoodsBatch">批量上架</button>
 					</div>
 				</form>
 			</div>
@@ -151,6 +152,20 @@ table {
 		
 	</div>
 	<script>
+
+        document.getElementById("upGoodsBatch").addEventListener("click",function(){
+            let chks = document.getElementsByName("chk");
+            let ids = "";
+            for(let i=0;i<chks.length;i++){
+                if(chks[i].checked){
+                    ids += chks[i].value + ",";
+                }
+            }
+            //去掉最后的一个逗号
+            ids = ids.substring(0,ids.length-1);
+            //将数据传到后台
+            window.location.href = "manage/goods?opr=upGoodsBatch&ids="+ids;
+        })
 
 		document.getElementById("deleteBatch").addEventListener("click",function(){
 			let chks = document.getElementsByName("chk");

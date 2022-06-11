@@ -3,6 +3,7 @@ package com.woniumall.service;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.woniumall.dao.UserDao;
+import com.woniumall.entity.Address;
 import com.woniumall.entity.User;
 import com.woniumall.exception.AccountIsExist;
 import com.woniumall.exception.UserNoActive;
@@ -46,10 +47,9 @@ public class UserService {
      * @return
      */
     public void register(User user){
-
         UserDao userDao = MyBatisUtil.getDao(UserDao.class);
-        userDao.queryUserByAccount(user.getAccount());
-        if (user != null){
+        User user1 = userDao.queryUserByAccount(user.getAccount());
+        if (user1 != null){
             throw new AccountIsExist("当前账号已存在");
         }else {
             Integer insert = userDao.insert(user);
@@ -78,5 +78,21 @@ public class UserService {
         UserDao userDao = MyBatisUtil.getDao(UserDao.class);
         User user = userDao.queryUserByAccount(username);
         return user;
+    }
+
+    public List<Address> getUserAddress(Integer userCurrentLoginId) {
+        UserDao userDao = MyBatisUtil.getDao(UserDao.class);
+        return userDao.selectUserAddressList(userCurrentLoginId);
+
+    }
+
+    public User checkEmail(String email) {
+        UserDao userDao = MyBatisUtil.getDao(UserDao.class);
+        return userDao.selectEmail(email);
+    }
+
+    public void activeForEmail(String email) {
+        UserDao userDao = MyBatisUtil.getDao(UserDao.class);
+        userDao.updateStatusByEmail(email);
     }
 }

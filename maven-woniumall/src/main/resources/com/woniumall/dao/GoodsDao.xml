@@ -34,6 +34,14 @@
         update mall_goods set status=#{status} where id=#{goodId}
     </update>
 
+
+    <update id="changeGoodStatusBatch">
+        update mall_goods set status=#{status} where id in
+        <foreach collection="array" item="id" open="(" close=")" separator=",">
+            #{id}
+        </foreach>
+    </update>
+
     <select id="queryById" resultType="Goods">
         select * from mall_goods where id=#{id}
     </select>
@@ -108,6 +116,13 @@
         <if test="status != null and status !=''">
             and g.status = #{status}
         </if>
+    </select>
+
+    <select id="queryByIds" resultType="com.woniumall.entity.Goods">
+        select * from mall_goods where id in
+        <foreach collection="array" item="id" open="(" close=")" separator=",">
+            #{id}
+        </foreach>
     </select>
 
     <!--    <select id="queryAll" resultMap="GoodsMap">-->

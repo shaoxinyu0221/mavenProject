@@ -4,13 +4,44 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.woniumall.dao.CartDao">
 
-    <insert id="insert">
+    <insert id="insert" useGeneratedKeys="true" keyProperty="id">
         insert into mall_cart(userid,goodsid,num,addprice,addtime,ischecked)
         values (#{userId},#{goodsId},#{num},#{addPrice},#{addTime},#{isChecked})
     </insert>
 
+
+    <update id="changeGoodsNum">
+        update mall_cart set num=num+#{buyNums} where userid=#{userId} and goodsid=#{goodsId}
+    </update>
+
+    <update id="reduceNum">
+        update mall_cart set num=num-1 where userid=#{userId} and goodsid=#{goodsId}
+    </update>
+
+    <update id="addNum">
+        update mall_cart set num=num+1 where userid=#{userId} and goodsid=#{goodsId}
+    </update>
+
+    <update id="changeNum">
+        update mall_cart set num=#{buyNums} where userid=#{userId} and goodsid=#{goodsId}
+    </update>
+
+    <update id="changeStatusIsSelected">
+        update mall_cart set ischecked = '1' where goodsid=#{goodsId} and userid=#{userId}
+    </update>
+    <update id="changeStatusNotSelected">
+        update mall_cart set ischecked = '0' where goodsid=#{goodsId} and userid=#{userId}
+    </update>
+
+    <delete id="deleteCartByGoodsIdAndUserId">
+        delete from mall_cart where userid=#{userId} and goodsid=#{deleteGoodsId}
+    </delete>
+
+
     <select id="getByUserId" resultType="Cart">
-        select * from mall_cart
+        select *
+        from mall_cart mc,mall_goods mg where mc.goodsid=mg.id
+        and userid=#{userid}
     </select>
 
     <resultMap id="CartToGoodsMap" type="Cart">
@@ -32,6 +63,18 @@
         select mc.*,mg.name,mg.img,mg.salePrice
         from mall_cart as mc,mall_goods as mg where mc.goodsid=mg.id
         and mc.userid=#{userid}
+    </select>
+
+    <select id="queryCartByUserIdAndGoodsId" resultType="java.lang.Integer">
+        select count(*) from mall_cart where userid=#{userId} and goodsid=#{goodsId}
+    </select>
+
+
+    <select id="getCartCount" resultType="java.lang.Integer">
+        select count(*) from mall_cart where userid=#{userId}
+    </select>
+    <select id="queryGoodsNum" resultType="com.woniumall.entity.Cart">
+        select * from mall_cart where userid=#{userId} and goodsid=#{goodsId}
     </select>
 
 </mapper>

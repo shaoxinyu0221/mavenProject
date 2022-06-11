@@ -10,6 +10,7 @@ import com.woniumall.entity.Goods;
 import com.woniumall.entity.Order;
 import com.woniumall.entity.OrderItem;
 import com.woniumall.entity.User;
+import com.woniumall.exception.MyServiceException;
 import com.woniumall.util.MallUtil;
 import com.woniumall.util.MyBatisUtil;
 import org.apache.ibatis.session.SqlSession;
@@ -34,9 +35,7 @@ public class OrderService {
         BigDecimal totalMoney = new BigDecimal("0");
         //循环添加订单项中的价格,并且补全订单项信息
         for (OrderItem orderItem : orderItems) {
-            //根据商品id查询商品单价
             //设置商品价格
-            orderItem.setPrice(goodsDao.queryById(orderItem.getGoodsId()).getSalePrice());
             BigDecimal salePrice = orderItem.getPrice();
             //获取商品数量
             BigDecimal num = new BigDecimal(String.valueOf(orderItem.getNum()));
@@ -59,6 +58,9 @@ public class OrderService {
             //更新库存
             Goods goods = goodsDao.queryById(orderItem.getGoodsId());
             Integer stock = goods.getStock() - orderItem.getNum();
+            if (stock <= 0){
+                throw new MyServiceException("库存数量不足");
+            }
             goodsDao.updateStockByid(goods.getId(),stock);
         }
         //增加用户积分,10块钱1积分

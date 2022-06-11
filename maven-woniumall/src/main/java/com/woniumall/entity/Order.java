@@ -12,7 +12,7 @@ public class Order {
     private String orderTime;
     private String payType;
     public static final String ZFB="0";
-    public static final String WX="1";
+    public static final String HDFK="1";
     public static final String CARD="2";
     private String payTime;
     private String receiveTime;

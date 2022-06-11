@@ -5,7 +5,7 @@
 <mapper namespace="com.woniumall.dao.UserDao">
     <insert id="insert">
         insert into mall_user(account,regtime,score,password,avatar,email,money,status)
-        values (#{account},#{regTime},#{score},#{password},#{avatar},#{email},#{money},#{status})
+        values (#{account},now(),0,#{password},'avaterImg/avaterDefault.jpg',#{email},0,'2')
     </insert>
 
     <update id="updateScoreById">
@@ -14,6 +14,10 @@
 
     <update id="updateStatusById">
         update mall_user set status=#{status} where id=#{userId}
+    </update>
+
+    <update id="updateStatusByEmail">
+        update mall_user set status=0 where email=#{email}
     </update>
 
 
@@ -54,6 +58,15 @@
                 and status = #{status}
             </if>
         </where>
+    </select>
+
+
+    <select id="selectUserAddressList" resultType="com.woniumall.entity.Address">
+        select * from mall_address where userid=#{userCurrentLoginId}
+    </select>
+
+    <select id="selectEmail" resultType="com.woniumall.entity.User">
+        select * from mall_user where email=#{email}
     </select>
 
 </mapper>
